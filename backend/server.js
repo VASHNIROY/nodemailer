@@ -1,11 +1,12 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const emailRoutes = require("./routes/emailRoutes");
+import express from "express";
+import dotenv from "dotenv";
+import emailRoutes from "./routes/emailRoutes.js";
 
 const app = express();
 dotenv.config();
 
-const cors = require("cors");
+import cors from "cors";
+
 const corsOptions = {
   origin: "*",
   credentials: true, //access-control-allow-credentials:true
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

@@ -7,42 +7,65 @@ import {
   Stack,
   Button,
   Heading,
-  Text,
+  Select,
   useColorModeValue,
-  Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function MyForm() {
   const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [toName, setToName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [position, setPosition] = useState("");
 
   const baseUrl = "http://localhost:8000";
 
   const sendEmail = async () => {
-    let dataSend = {
-      email: email,
-      subject: subject,
-      message: message,
-    };
+    try {
+      if (!email.trim() || !designation || !toName.trim() || !companyName.trim() || !position.trim()) {
+        alert("Please enter all fields");
+        return;
+      }
+      
+      if (!email.trim().toLowerCase().endsWith("@gmail.com")) {
+        alert("Please enter a valid gmail address");
+        return;
+      }
 
-    const res = await fetch(`${baseUrl}/email/sendEmail`, {
-      method: "POST",
-      body: JSON.stringify(dataSend),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      // HANDLING ERRORS
-      .then((res) => {
-        console.log(res);
-        if (res.status > 199 && res.status < 300) {
-          alert("Send Successfully !");
-        }
+      const data = {
+        email,
+        designation,
+        toName,
+        companyName,
+        position,
+      };
+
+      console.log(data);
+
+      const res = await fetch(`${baseUrl}/email/sendEmail`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       });
+
+      console.log(res);
+
+      if (res.status > 199 && res.status < 300) {
+        alert("Send Successfully !");
+        setEmail("");
+        setToName("");
+        setCompanyName("");
+        setPosition("");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
   return (
     <Flex
       minH={"100vh"}
@@ -53,9 +76,6 @@ export default function MyForm() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Send email to the account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            Don't forget to subscribe ✌️
-          </Text>
         </Stack>
         <Box
           rounded={"lg"}
@@ -64,29 +84,54 @@ export default function MyForm() {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
+            <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
                 type="email"
+                value={email}
                 placeholder="Receiver's Email Address"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
-            <FormControl id="email">
-              <FormLabel>Subject</FormLabel>
+            <FormControl isRequired>
+              <FormLabel>To</FormLabel>
+              <Select
+                placeholder="Select Type"
+                value={designation}
+                onChange={(e) => setDesignation(e.target.value)}
+              >
+                <option>HR</option>
+                <option>Employee</option>
+              </Select>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>To Name</FormLabel>
               <Input
-                onChange={(e) => setSubject(e.target.value)}
-                type="text"
-                placeholder="Enter the subject here..."
+                placeholder="Name"
+                value={toName}
+                onChange={(e) => setToName(e.target.value)}
               />
             </FormControl>
-            <FormControl id="text">
-              <FormLabel>Message</FormLabel>
-              <Textarea
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter your message here..."
+
+            <FormControl isRequired>
+              <FormLabel>Position</FormLabel>
+              <Input
+                placeholder="Position Name"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
               />
             </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Company Name</FormLabel>
+              <Input
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+              />
+            </FormControl>
+
             <Stack spacing={10}>
               <Button
                 bg={"blue.400"}
@@ -94,7 +139,7 @@ export default function MyForm() {
                 _hover={{
                   bg: "blue.500",
                 }}
-                onClick={() => sendEmail()}
+                onClick={sendEmail}
               >
                 Send Email
               </Button>
