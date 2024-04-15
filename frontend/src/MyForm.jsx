@@ -37,11 +37,6 @@ export default function MyForm() {
         return;
       }
 
-      if (!email.trim().toLowerCase().endsWith("@gmail.com")) {
-        alert("Please enter a valid gmail address");
-        return;
-      }
-
       const data = {
         email,
         designation,
