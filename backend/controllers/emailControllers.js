@@ -14,7 +14,7 @@ const resumePath = join(
   __dirname,
   "..",
   "utils",
-  "Vashni Roy Resume Full Stack Developer.pdf"
+  "Vashni Roy Fullstack Developer.pdf"
 );
 
 const transporter = createTransport({

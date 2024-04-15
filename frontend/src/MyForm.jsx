@@ -19,15 +19,24 @@ export default function MyForm() {
   const [companyName, setCompanyName] = useState("");
   const [position, setPosition] = useState("");
 
-  const baseUrl = "http://localhost:8000";
+  const baseUrl = "https://roynodemailer.onrender.com";
+
+  // https://roynodemailer.onrender.com
+  //http://localhost:8000
 
   const sendEmail = async () => {
     try {
-      if (!email.trim() || !designation || !toName.trim() || !companyName.trim() || !position.trim()) {
+      if (
+        !email.trim() ||
+        !designation ||
+        !toName.trim() ||
+        !companyName.trim() ||
+        !position.trim()
+      ) {
         alert("Please enter all fields");
         return;
       }
-      
+
       if (!email.trim().toLowerCase().endsWith("@gmail.com")) {
         alert("Please enter a valid gmail address");
         return;
