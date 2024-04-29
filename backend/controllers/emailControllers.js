@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 
 const resumePath = join(
   __dirname,
-  "..",
+  "..",s
   "utils",
   "Vashni Roy Full stack developer.pdf"
 );
